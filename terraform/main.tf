@@ -4,10 +4,10 @@ terraform {
   required_version = ">= 1.5.0"
 
   backend "s3" {
-    bucket       = "swati-portfolio-tfstate-963236301028"
-    key          = "portfolio/terraform.tfstate"
-    region       = "us-east-1"
-    encrypt      = true
+    bucket  = "swati-portfolio-tfstate-963236301028"
+    key     = "portfolio/terraform.tfstate"
+    region  = "us-east-1"
+    encrypt = true
   }
 
   required_providers {
@@ -116,18 +116,6 @@ resource "aws_instance" "portfolio" {
   tags = {
     Name = "Swati-Portfolio-Server"
   }
-}
-resource "aws_eip" "portfolio" {
-  domain = "vpc"
-
-  tags = {
-    Name = "Swati-Portfolio-Static-IP"
-  }
-}
-
-resource "aws_eip_association" "portfolio" {
-  instance_id   = aws_instance.portfolio.id
-  allocation_id = aws_eip.portfolio.id
 }
 
 resource "aws_eip" "portfolio" {
