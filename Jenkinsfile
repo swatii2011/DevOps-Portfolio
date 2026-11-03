@@ -13,7 +13,7 @@ pipeline {
         stage('Verify Source Code') {
             steps {
                 echo 'Checking downloaded files'
-                bat 'dir'
+                sh 'ls -la'
             }
         }
 
