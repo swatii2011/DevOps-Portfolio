@@ -117,3 +117,28 @@ resource "aws_instance" "portfolio" {
     Name = "Swati-Portfolio-Server"
   }
 }
+resource "aws_eip" "portfolio" {
+  domain = "vpc"
+
+  tags = {
+    Name = "Swati-Portfolio-Static-IP"
+  }
+}
+
+resource "aws_eip_association" "portfolio" {
+  instance_id   = aws_instance.portfolio.id
+  allocation_id = aws_eip.portfolio.id
+}
+
+resource "aws_eip" "portfolio" {
+  domain = "vpc"
+
+  tags = {
+    Name = "Swati-Portfolio-Static-IP"
+  }
+}
+
+resource "aws_eip_association" "portfolio" {
+  instance_id   = aws_instance.portfolio.id
+  allocation_id = aws_eip.portfolio.id
+}
