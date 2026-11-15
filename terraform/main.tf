@@ -40,27 +40,6 @@ data "aws_subnets" "default" {
   }
 }
 
-# Find the latest Amazon Linux 2023 image
-data "aws_ami" "amazon_linux" {
-  most_recent = true
-  owners      = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["al2023-ami-2023.*-x86_64"]
-  }
-
-  filter {
-    name   = "architecture"
-    values = ["x86_64"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-}
-
 # Security group for the portfolio server
 resource "aws_security_group" "portfolio_sg" {
   name        = "portfolio-web-sg"
@@ -97,7 +76,7 @@ resource "aws_security_group" "portfolio_sg" {
 
 # Create the EC2 instance
 resource "aws_instance" "portfolio" {
-  ami                    = data.aws_ami.amazon_linux.id
+  ami                    = "ami-0129e28f078083cdf"
   instance_type          = "t3.micro"
   key_name               = "terraform-ansible-key"
   subnet_id              = data.aws_subnets.default.ids[0]
