@@ -1,0 +1,34 @@
+
+# Get Docker CLI
+FROM docker:cli AS dockercli
+
+# Jenkins base image
+FROM jenkins/jenkins:lts
+
+USER root
+
+# Copy Docker CLI into Jenkins
+COPY --from=dockercli /usr/local/bin/docker /usr/local/bin/docker
+
+# Install required Linux utilities
+RUN apt-get update && \
+    apt-get install -y ca-certificates curl unzip groff less && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Terraform
+ARG TERRAFORM_VERSION=1.16.1
+
+RUN curl -fsSLo /tmp/terraform.zip \
+    https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
+    unzip /tmp/terraform.zip -d /usr/local/bin/ && \
+    rm /tmp/terraform.zip
+
+# Install AWS CLI v2
+RUN curl -fsSLo /tmp/awscliv2.zip \
+    https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip && \
+    unzip /tmp/awscliv2.zip -d /tmp && \
+    /tmp/aws/install && \
+    rm -rf /tmp/aws /tmp/awscliv2.zip
+
+# Use Jenkins user
+USER jenkins
